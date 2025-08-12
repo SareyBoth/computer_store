@@ -1,33 +1,31 @@
+//Use an official PHP runtime as the base image
+
 FROM php:8.3-apache
 
-RUN apt-get update && apt-get install -y \
-    libonig-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    && docker-php-ext-install pdo_mysql mbstring zip exif \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN a2enmod rewrite
+//Set the working directory in the container
 
 WORKDIR /var/www/html
 
-# Copy composer files first for caching
+//Copy just the necessary files for Composer installation
+
 COPY composer.json composer.lock /var/www/html/
 
-# Copy rest of app code (including artisan)
+//Install Composer
+RUN apt-get update && apt-get install -y unzip && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+//Install project dependencies with Composer
+
+RUN composer install --no-dev
+
+//Copy the rest of your PHP files to the container
+
 COPY . /var/www/html
 
-# Copy composer binary
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Run composer install
-RUN composer install --no-dev --optimize-autoloader
-
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+//Expose port 80 for the Apache web server
 
 EXPOSE 80
+
+//Start the Apache web server
 
 CMD ["apache2-foreground"]
