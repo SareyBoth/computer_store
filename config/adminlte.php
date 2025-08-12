@@ -335,7 +335,7 @@ return [
         ],
         [
             'text' => 'Accessories',
-            'url' => 'dashboard/accessories',
+            'url' => 'dashboard/accessory',
             // 'icon' => 'fas fa-fw fa-lock',
         ],
         [
@@ -345,7 +345,7 @@ return [
         ],
         [
             'text' => 'PC Sets',
-            'url' => 'dashboard/pc-sets',
+            'url' => 'dashboard/pc-set',
             // 'icon' => 'fas fa-fw fa-lock',
         ],
     ],

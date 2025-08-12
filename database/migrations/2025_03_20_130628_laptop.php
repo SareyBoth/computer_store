@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('battery');
             $table->string('weight');
             $table->string('warranty');
-            $table->json('upgrade');
+            $table->string('upgrade');
 
         });
     }

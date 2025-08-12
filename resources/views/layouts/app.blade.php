@@ -26,4 +26,35 @@
 
         </div>
     </body>
+    <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+    <script src="https://cdn.tiny.cloud/1/YOUR_API_KEY/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea.tinymce-editor',
+            plugins: 'image media link code',
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright | code',
+            file_picker_callback: function(callback, value, meta) {
+                let x = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                let y = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+                let cmsURL = '/file-manager?editor=' + meta.fieldname;
+                if (meta.filetype === 'image') {
+                    cmsURL += '&type=Images';
+                } else {
+                    cmsURL += '&type=Files';
+                }
+
+                tinymce.activeEditor.windowManager.openUrl({
+                    url: cmsURL,
+                    title: 'File Manager',
+                    width: x * 0.8,
+                    height: y * 0.8,
+                    resizable: 'yes',
+                    close_previous: 'no'
+                });
+            }
+        });
+    </script>
+
 </html>
